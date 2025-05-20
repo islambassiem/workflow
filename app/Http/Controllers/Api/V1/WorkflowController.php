@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\WorkflowRequest;
 use App\Http\Resources\V1\WorkflowResource;
 use App\Models\Workflow;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class WorkflowController extends Controller

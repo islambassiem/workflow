@@ -4,7 +4,6 @@ namespace App\Actions\V1\Workflow;
 
 use App\Models\Workflow;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 
 class IndexWorkflowAction

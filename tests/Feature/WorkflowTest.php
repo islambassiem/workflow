@@ -5,8 +5,7 @@ use App\Models\Workflow;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\WorkflowPermissionSeeder;
 use Database\Seeders\WorkflowSeeder;
-use Illuminate\Testing\Fluent\AssertableJson;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 describe('guest cannot access workflow', function () {
@@ -141,7 +140,7 @@ describe('authorized users can access workflows', function () {
 
         $response = $this->actingAs($admin)->postJson(route('workflows.store'), [
             'name' => 'title',
-            'description' => 'description for the workflow'
+            'description' => 'description for the workflow',
         ]);
 
         $response->assertStatus(201)
@@ -157,7 +156,7 @@ describe('authorized users can access workflows', function () {
 
         $response = $this->actingAs($admin)->putJson(route('workflows.update', 1), [
             'name' => 'title updated',
-            'description' => 'description updated'
+            'description' => 'description updated',
         ]);
 
         $response->assertStatus(200)
@@ -174,5 +173,6 @@ describe('authorized users can access workflows', function () {
         $response->assertStatus(422);
     })->with([
         [['name' => '', 'description' => '']],
+        [['name' => Str::repeat('a', 256), 'description' => Str::repeat('a', 10001)]],
     ]);
 });
