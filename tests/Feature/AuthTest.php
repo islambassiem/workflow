@@ -3,11 +3,6 @@
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 
-dataset('users', [
-    [['email' => 'wrong@email.com', 'password' => 'password']],
-    [['email' => 'email@gmail.com', 'password' => 'wrong-password']],
-]);
-
 test('guest can log in successfully', function () {
 
     $user = User::factory()->create([
@@ -39,7 +34,10 @@ test('guest user cannot login with wrong credentials', function ($users) {
     $response = $this->postJson(route('login'), ['users']);
 
     $response->assertStatus(422);
-})->with('users');
+})->with([
+    [['email' => 'wrong@email.com', 'password' => 'password']],
+    [['email' => 'email@gmail.com', 'password' => 'wrong-password']],
+]);
 
 test('authenticated user can logout', function () {
     $user = User::factory()->create();
