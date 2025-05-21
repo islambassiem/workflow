@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class StepRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,11 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:users,email'],
-            'password' => ['required'],
+            'workflow_id' => ['required', 'exists:workflows,id'],
+            'order' => ['required', 'integer', 'min:1'],
+            'name' => ['required', 'string', 'max:255'],
+            'created_by' => ['nullable', 'exists:users,id'],
+            'updated_by' => ['nullable', 'exists:users,id'],
         ];
     }
 }

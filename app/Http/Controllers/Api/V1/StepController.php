@@ -8,7 +8,7 @@ use App\Actions\V1\Step\ShowStepAction;
 use App\Actions\V1\Step\StoreStepAction;
 use App\Actions\V1\Step\UpdateStepAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\StepRequest;
+use App\Http\Requests\V1\StepRequest;
 use App\Http\Resources\V1\StepResource;
 use App\Models\Step;
 use App\Models\Workflow;

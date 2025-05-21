@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\LoginController;
-use App\Http\Controllers\Api\LogoutController;
+use App\Http\Controllers\Api\V1\LoginController;
+use App\Http\Controllers\Api\V1\LogoutController;
 use App\Http\Controllers\Api\V1\StepController;
 use App\Http\Controllers\Api\V1\WorkflowController;
 use Illuminate\Http\Request;
