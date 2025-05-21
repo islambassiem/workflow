@@ -22,10 +22,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             WorkflowSeeder::class,
+            StepSeeder::class,
         ]);
 
         $this->call([
             WorkflowPermissionSeeder::class,
+            StepPermissionSeeder::class,
         ]);
     }
 }

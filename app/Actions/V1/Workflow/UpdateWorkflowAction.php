@@ -13,7 +13,7 @@ class UpdateWorkflowAction
      */
     public function handle(Workflow $workflow, array $attributes): Workflow
     {
-        Gate::authorize('update_workflow');
+        Gate::authorize('update_workflow', $workflow);
 
         $attributes['updated_by'] = Auth::id();
         $workflow->update($attributes);
