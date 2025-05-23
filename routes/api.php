@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\LogoutController;
+use App\Http\Controllers\Api\V1\RequestController;
 use App\Http\Controllers\Api\V1\StepController;
 use App\Http\Controllers\Api\V1\WorkflowController;
 use Illuminate\Http\Request;
@@ -17,4 +18,5 @@ Route::middleware('auth:sanctum')->post('logout', LogoutController::class)->name
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('workflows', WorkflowController::class)->except('destroy');
     Route::apiResource('workflows.steps', StepController::class);
+    Route::apiResource('requests', RequestController::class);
 });
