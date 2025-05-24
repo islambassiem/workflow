@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\ApprovalController;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\LogoutController;
 use App\Http\Controllers\Api\V1\RequestController;
@@ -19,4 +20,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('workflows', WorkflowController::class)->except('destroy');
     Route::apiResource('workflows.steps', StepController::class);
     Route::apiResource('requests', RequestController::class);
+    Route::apiResource('requests.approvals', ApprovalController::class)->except('destroy');
 });
