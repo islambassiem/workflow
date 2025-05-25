@@ -9,7 +9,9 @@ parameters:
 
     # Level 10 is the highest level
     level: 7
-
+    
+    universalObjectCratesClasses:
+    - Illuminate\Http\Resources\Json\JsonResource
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
