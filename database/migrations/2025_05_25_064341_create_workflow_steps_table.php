@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedTinyInteger('order')->default(1);
             $table->string('approver_type');
-            $table->unsignedBigInteger('approver_id');
+            $table->string('approver_id');
             $table->foreignIdFor(User::class, 'created_by')->constrained();
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained();
             $table->timestamps();

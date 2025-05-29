@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum Approver: int
+enum Approver: string
 {
-    case ROLE = 1;
+    case ROLE = 'Spatie\Permission\Models\Role';
 
-    case USER = 2;
+    case USER = 'App\Models\User';
 
     public function lable(): string
     {

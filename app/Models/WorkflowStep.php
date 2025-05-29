@@ -6,6 +6,7 @@ use App\Enums\Approver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class WorkflowStep extends Model
@@ -37,6 +38,14 @@ class WorkflowStep extends Model
     public function workflow(): BelongsTo
     {
         return $this->belongsTo(Workflow::class);
+    }
+
+    /**
+     * @return HasMany<WorkflowStep, $this>
+     */
+    public function steps(): HasMany
+    {
+        return $this->hasMany(WorkflowStep::class);
     }
 
     /**
