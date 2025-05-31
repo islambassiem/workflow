@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Requests\V1;
+namespace App\Http\Requests\V1\Admin;
 
+use App\Enums\Approver;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateWorkflowRequest extends FormRequest
+class UpdateWorkflowStepRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('update_a_workflow');
+        return auth()->user()->can('update_a_workflow_step');
     }
 
     /**
@@ -22,8 +24,12 @@ class UpdateWorkflowRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'workflow_id' => ['required', 'exists:workflows,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
+            'order' => ['required', 'integer'],
+            'approver_type' => ['required', Rule::enum(Approver::class)],
+            'approver_id' => ['required', 'integer'],
             'created_by' => ['nullable', 'exists:users,id'],
             'updated_by' => ['nullable', 'exists:users,id'],
         ];

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Actions\V1\WorkflowStep\DestroyWorkflowStepAction;
-use App\Actions\V1\WorkflowStep\IndexWorkflowStepAction;
-use App\Actions\V1\WorkflowStep\ShowWorkflowStepActionhp;
-use App\Actions\V1\WorkflowStep\StoreWorkflowStepAction;
-use App\Actions\V1\WorkflowStep\UpdateWorkflowStepAction;
+use App\Actions\V1\Admin\WorkflowStep\DestroyWorkflowStepAction;
+use App\Actions\V1\Admin\WorkflowStep\IndexWorkflowStepAction;
+use App\Actions\V1\Admin\WorkflowStep\ShowWorkflowStepActionhp;
+use App\Actions\V1\Admin\WorkflowStep\StoreWorkflowStepAction;
+use App\Actions\V1\Admin\WorkflowStep\UpdateWorkflowStepAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\StoreWorkflowStepRequest;
-use App\Http\Requests\V1\UpdateWorkflowStepRequest;
+use App\Http\Requests\V1\Admin\StoreWorkflowStepRequest;
+use App\Http\Requests\V1\Admin\UpdateWorkflowStepRequest;
 use App\Http\Resources\V1\WorkflowStepResource;
 use App\Models\Workflow;
 use App\Models\WorkflowStep;

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Actions\V1\Workflow;
+namespace App\Actions\V1\Admin\Workflow;
 
 use App\Models\Workflow;
-use Auth;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class UpdateWorkflowAction

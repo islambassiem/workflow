@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\V1\Workflow;
+namespace App\Actions\V1\Admin\Workflow;
 
 use App\Models\Workflow;
 use Illuminate\Support\Facades\Gate;

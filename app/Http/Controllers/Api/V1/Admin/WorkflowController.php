@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Actions\V1\Workflow\IndexWorkflowAction;
-use App\Actions\V1\Workflow\ShowWorkflowAction;
-use App\Actions\V1\Workflow\StoreWorkflowAction;
-use App\Actions\V1\Workflow\UpdateWorkflowAction;
+use App\Actions\V1\Admin\Workflow\IndexWorkflowAction;
+use App\Actions\V1\Admin\Workflow\ShowWorkflowAction;
+use App\Actions\V1\Admin\Workflow\StoreWorkflowAction;
+use App\Actions\V1\Admin\Workflow\UpdateWorkflowAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\StoreWorkflowRequest;
-use App\Http\Requests\V1\UpdateWorkflowRequest;
+use App\Http\Requests\V1\Admin\StoreWorkflowRequest;
+use App\Http\Requests\V1\Admin\UpdateWorkflowRequest;
 use App\Http\Resources\V1\WorkflowResource;
 use App\Models\Workflow;
 use Illuminate\Http\Resources\Json\JsonResource;
