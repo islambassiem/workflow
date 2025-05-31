@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Actions\V1\WorkflowStep\DestroyWorkflowStepAction;
 use App\Actions\V1\WorkflowStep\IndexWorkflowStepAction;

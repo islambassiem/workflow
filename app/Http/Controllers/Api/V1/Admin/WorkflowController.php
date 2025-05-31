@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Actions\V1\Workflow\IndexWorkflowAction;
 use App\Actions\V1\Workflow\ShowWorkflowAction;
