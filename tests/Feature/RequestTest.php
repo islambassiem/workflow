@@ -1,0 +1,110 @@
+<?php
+
+use App\Models\User;
+use App\Models\Workflow;
+use App\Models\WorkflowRequest;
+use Database\Seeders\UserSeeder;
+use Database\Seeders\WorkflowSeeder;
+use Illuminate\Testing\Fluent\AssertableJson;
+
+describe('authentication', function () {
+
+    test('guest cannot access workflow resource collection', function () {
+        $this->seed([UserSeeder::class, WorkflowSeeder::class]);
+        $response = $this->getJson(route('requests.index'));
+        $response->assertStatus(401);
+    });
+
+    test('guest cannot access a workflow resource', function () {
+        $this->seed([UserSeeder::class, WorkflowSeeder::class]);
+        $response = $this->getJson(route('requests.show', 1));
+        $response->assertStatus(401);
+    });
+
+    test('guest cannot create a workflow', function () {
+        $response = $this->postJson(route('requests.store'), []);
+        $response->assertStatus(401);
+    });
+
+    test('guest cannot delete a workflow', function () {
+        $response = $this->deleteJson(route('requests.destroy', 1));
+        $response->assertStatus(401);
+    });
+});
+
+describe('users can access requests', function () {
+
+    test('authenticated users can access their own requests', function () {
+        $this->seed();
+        $user = User::factory()->has(WorkflowRequest::factory()->count(3), 'requests')->create();
+        $response = $this->actingAs($user)->getJson(route('requests.index'));
+
+        $response->assertStatus(200)
+            ->assertJson(function (AssertableJson $json) {
+                $json->hasAll(['data' => 3, 'meta', 'links'])->etc();
+            });
+
+        expect($response['data'])->each(function ($item) use ($user) {
+            expect($item->value['user']['id'])->toBe($user->id);
+            expect($item->value['user']['id'])->not->toBe(User::factory()->create()->id);
+        });
+    });
+
+    test('authenticated users cannot access other users requests', function () {
+        $this->seed();
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->getJson(route('requests.index'));
+
+        $response->assertStatus(200)
+            ->assertJson(function (AssertableJson $json) {
+                $json->hasAll(['data' => 0, 'meta', 'links'])->etc();
+            });
+    });
+
+    test('authenticated users can access no requests page', function () {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->getJson(route('requests.index'));
+
+        $response->assertStatus(200)
+            ->assertJson(function (AssertableJson $json) {
+                $json->hasAll(['data' => 0, 'meta', 'links'])->etc();
+            });
+    });
+
+    test('authenticated user can show a single request', function () {
+        $this->seed([UserSeeder::class, WorkflowSeeder::class]);
+        $user = User::factory()->has(WorkflowRequest::factory()->count(3), 'requests')->create();
+        $request = WorkflowRequest::where('user_id', $user->id)->first();
+        $response = $this->actingAs($user)->getJson(route('requests.show', $request->id));
+
+        $response->assertStatus(200);
+
+        expect($response['user']['id'])->toBe($user->id);
+        expect($response['user']['id'])->not->toBe(User::factory()->create()->id);
+    });
+
+    test('authenticated user can create a request', function () {
+        $this->seed([UserSeeder::class, WorkflowSeeder::class]);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->postJson(route('requests.store'), [
+            'workflow_id' => Workflow::first()->id,
+        ]);
+
+        $response->assertStatus(201);
+
+        expect($response['status'])->toBe(1);
+        expect($response['priority'])->toBe(1);
+        expect($response['data'])->toBeNull();
+    });
+
+    test('authenticated user can delete a request', function () {
+        $this->seed([UserSeeder::class, WorkflowSeeder::class]);
+        $user = User::factory()->has(WorkflowRequest::factory()->count(3), 'requests')->create();
+        $request = WorkflowRequest::where('user_id', $user->id)->first();
+
+        $response = $this->actingAs($user)->deleteJson(route('requests.destroy', $request->id));
+
+        $response->assertStatus(204);
+    });
+
+});
