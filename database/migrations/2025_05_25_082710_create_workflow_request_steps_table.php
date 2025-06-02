@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(WorkflowRequest::class)->constrained();
             $table->foreignIdFor(WorkflowStep::class)->constrained();
-            $table->foreignIdFor(User::class, 'approver_id')->constrained('users');
+            $table->foreignIdFor(User::class, 'approver_id')->nullable()->constrained('users');
             $table->unsignedTinyInteger('status')->default(1);
             $table->text('comment')->nullable();
             $table->timestamp('approved_at')->nullable();

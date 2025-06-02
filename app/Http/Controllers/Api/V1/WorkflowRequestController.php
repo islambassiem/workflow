@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreRequestRequest;
 use App\Http\Resources\V1\RequestResource;
 use App\Models\WorkflowRequest;
+use App\Services\V1\WorkflowRequestStepService;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -31,9 +33,14 @@ class WorkflowRequestController extends Controller
      */
     public function store(StoreRequestRequest $request, StoreRequestAction $action): JsonResource
     {
-        $request = $action->handle(Auth::user(), $request->validated());
+        $insertedWorkflowRequest = DB::transaction(function () use ($request, $action) {
+            $workflowRequest = $action->handle(Auth::user(), $request->validated());
+            (new WorkflowRequestStepService($workflowRequest))->store();
 
-        return new RequestResource($request);
+            return $workflowRequest;
+        });
+
+        return new RequestResource($insertedWorkflowRequest);
     }
 
     /**

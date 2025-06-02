@@ -16,13 +16,13 @@ class StoreRequestAction
     public function handle(User $user, array $attributes): WorkflowRequest
     {
 
-        // Gate::authorize('create', WorkflowRequest::class);
+        Gate::authorize('create', WorkflowRequest::class);
 
         $attributes['status'] = Status::PENDING;
         $attributes['priority'] = Priority::LOW;
 
         $request = $user->requests()->create($attributes);
 
-        return $request->load('workflow', 'user');
+        return $request->load('workflow', 'user', 'steps');
     }
 }
