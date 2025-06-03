@@ -56,7 +56,9 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@php artisan test"
+            "@php artisan test",
+            "./vendor/bin/pint",
+            "./vendor/bin/phpstan analyse"
         ]
     },
     "extra": {

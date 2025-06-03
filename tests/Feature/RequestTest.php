@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\Priority;
+use App\Enums\Status;
 use App\Models\User;
 use App\Models\Workflow;
 use App\Models\WorkflowRequest;
@@ -91,9 +93,8 @@ describe('users can access requests', function () {
         ]);
 
         $response->assertStatus(201);
-
-        expect($response['status'])->toBe(1);
-        expect($response['priority'])->toBe(1);
+        expect($response['status'])->toBe(Status::PENDING->value);
+        expect($response['priority'])->toBe(Priority::LOW->value);
         expect($response['data'])->toBeNull();
     });
 
