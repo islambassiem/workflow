@@ -15,6 +15,8 @@ class WorkflowRequestStep extends Model
     protected $fillable = [
         'workflow_request_id',
         'workflow_step_id',
+        'order',
+        'approver_type',
         'approver_id',
         'status',
         'comment',

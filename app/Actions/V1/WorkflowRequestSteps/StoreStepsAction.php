@@ -20,6 +20,8 @@ class StoreStepsAction
             WorkflowRequestStep::create([
                 'workflow_request_id' => $this->request->id,
                 'workflow_step_id' => $step->id,
+                'order' => $step->order,
+                'approver_type' => $step->approver_type,
                 'approver_id' => $step->approver_id,
                 'status' => Status::PENDING,
             ]);

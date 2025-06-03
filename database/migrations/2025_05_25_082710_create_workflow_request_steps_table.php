@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use App\Models\WorkflowRequest;
 use App\Models\WorkflowStep;
 use Illuminate\Database\Migrations\Migration;
@@ -18,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(WorkflowRequest::class)->constrained();
             $table->foreignIdFor(WorkflowStep::class)->constrained();
-            $table->foreignIdFor(User::class, 'approver_id')->nullable()->constrained('users');
+            $table->unsignedTinyInteger('order');
+            $table->string('approver_type');
+            $table->unsignedBigInteger('approver_id');
             $table->unsignedTinyInteger('status')->default(1);
             $table->text('comment')->nullable();
             $table->timestamp('approved_at')->nullable();
