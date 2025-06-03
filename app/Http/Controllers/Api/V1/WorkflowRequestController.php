@@ -6,11 +6,11 @@ use App\Actions\V1\WorkflowRequests\DestroyRequestAction;
 use App\Actions\V1\WorkflowRequests\IndexRequestAction;
 use App\Actions\V1\WorkflowRequests\ShowRequestAction;
 use App\Actions\V1\WorkflowRequests\StoreRequestAction;
+use App\Actions\V1\WorkflowRequestSteps\StoreStepsAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreRequestRequest;
 use App\Http\Resources\V1\RequestResource;
 use App\Models\WorkflowRequest;
-use App\Services\V1\WorkflowRequestStepService;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -35,7 +35,7 @@ class WorkflowRequestController extends Controller
     {
         $insertedWorkflowRequest = DB::transaction(function () use ($request, $action) {
             $workflowRequest = $action->handle(Auth::user(), $request->validated());
-            (new WorkflowRequestStepService($workflowRequest))->store();
+            (new StoreStepsAction($workflowRequest))->handle();
 
             return $workflowRequest;
         });

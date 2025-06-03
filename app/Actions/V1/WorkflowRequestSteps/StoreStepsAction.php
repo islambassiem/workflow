@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Services\V1;
+namespace App\Actions\V1\WorkflowRequestSteps;
 
 use App\Enums\Status;
 use App\Models\WorkflowRequest;
 use App\Models\WorkflowRequestStep;
 use App\Models\WorkflowStep;
-use Illuminate\Database\Eloquent\Collection;
 
-class WorkflowRequestStepService
+class StoreStepsAction
 {
     public function __construct(
         public WorkflowRequest $request
     ) {}
 
-    public function store(): void
+    public function handle(): void
     {
-        $steps = $this->steps();
+        $steps = WorkflowStep::where('workflow_id', $this->request->workflow_id)->get();
         foreach ($steps as $step) {
             WorkflowRequestStep::create([
                 'workflow_request_id' => $this->request->id,
@@ -25,13 +24,5 @@ class WorkflowRequestStepService
                 'status' => Status::PENDING,
             ]);
         }
-    }
-
-    /**
-     * @return Collection<int, WorkflowStep>
-     */
-    private function steps(): Collection
-    {
-        return WorkflowStep::where('workflow_id', $this->request->workflow_id)->get();
     }
 }
