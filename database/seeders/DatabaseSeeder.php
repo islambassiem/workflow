@@ -17,9 +17,18 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserSeeder::class);
 
-        $user = User::where('name', 'admin')->first();
-        $role = Role::create(['name' => 'admin']);
-        $user->assignRole($role->name);
+        $adminUser = User::where('name', 'admin')->first();
+        $headUser = User::where('name', 'head')->first();
+        $admin = Role::create(['name' => 'admin']);
+        $head = Role::create(['name' => 'head']);
+        $finance = Role::create(['name' => 'finance']);
+        User::find(3)->assignRole($head->name);
+        $adminUser->assignRole($admin->name);
+        $headUser->assignRole($head->name);
+
+        foreach (User::where('id', '>=', '4')->get() as $user) {
+            $user->assignRole($finance->name);
+        }
 
         $this->call([
             WorkflowSeeder::class,

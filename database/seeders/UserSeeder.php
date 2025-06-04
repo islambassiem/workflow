@@ -19,11 +19,17 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'user',
-            'email' => 'user@example.com',
+            'name' => 'head',
+            'email' => 'head@example.com',
             'head' => 1,
         ]);
 
-        User::factory(8)->create();
+        User::factory()->create([
+            'name' => 'user',
+            'email' => 'user@example.com',
+            'head' => 2,
+        ]);
+
+        User::factory(7)->create();
     }
 }
