@@ -4,8 +4,7 @@ namespace App\Services\V1;
 
 use App\Models\User;
 use App\Models\WorkflowRequestStep;
-use Illuminate\Database\Eloquent\Collection;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Collection;
 
 class StepApproverUserService
 {
@@ -18,24 +17,20 @@ class StepApproverUserService
     }
 
     /**
-     * @return Collection<int, \App\Models\User> | User
+     * Get the users who can approve the step.
+     *
+     * @return Collection<int, User>
      */
-    public function handle(): Collection|User
+    public function handle(): Collection
     {
-        $approver_id = $this->step->approver_id;
+        $step = $this->step->load(['role']);
 
-        if ($this->step->approver_type === "Spatie\Permission\Models\Role") {
-            if (Role::find($approver_id)->name == 'head') {
-                $requester = User::find($this->step->request->user_id);
-                $head = User::find($requester->head);
+        if ($step->role->name === 'head') {
+            $head = $step->request->user->load('head')->head;
 
-                return $head;
-            }
-            $role = Role::find($approver_id);
-
-            return User::role($role->name)->get();
-        } else {
-            return User::find($approver_id);
+            return $head ? collect([$head]) : collect();
         }
+
+        return User::role($step->role->name)->get();
     }
 }

@@ -15,19 +15,19 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@example.com',
-            'head' => 1,
+            'head_id' => 1,
         ]);
 
         User::factory()->create([
             'name' => 'head',
             'email' => 'head@example.com',
-            'head' => 1,
+            'head_id' => 1,
         ]);
 
         User::factory()->create([
             'name' => 'user',
             'email' => 'user@example.com',
-            'head' => 2,
+            'head_id' => 2,
         ]);
 
         User::factory(7)->create();
