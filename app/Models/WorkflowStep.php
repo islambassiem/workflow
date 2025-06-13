@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\Approver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class WorkflowStep extends Model
 {
@@ -19,18 +16,10 @@ class WorkflowStep extends Model
         'name',
         'description',
         'order',
-        'approver_type',
-        'approver_id',
+        'role_id',
         'created_by',
         'updated_by',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'approver_type' => Approver::class,
-        ];
-    }
 
     /**
      * @return BelongsTo<Workflow, $this>
@@ -38,22 +27,6 @@ class WorkflowStep extends Model
     public function workflow(): BelongsTo
     {
         return $this->belongsTo(Workflow::class);
-    }
-
-    /**
-     * @return HasMany<WorkflowStep, $this>
-     */
-    public function steps(): HasMany
-    {
-        return $this->hasMany(WorkflowStep::class);
-    }
-
-    /**
-     * @return MorphTo<Model, $this>
-     */
-    public function approver(): MorphTo
-    {
-        return $this->morphTo();
     }
 
     /**

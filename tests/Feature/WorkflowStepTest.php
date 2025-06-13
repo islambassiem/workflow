@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Approver;
 use App\Models\User;
 use App\Models\Workflow;
 use App\Models\WorkflowStep;
@@ -154,8 +153,7 @@ describe('authenticated and authorized users', function () {
 
         WorkflowStep::factory()->count(3)->create([
             'workflow_id' => $workflow->id,
-            'approver_id' => $role->id,
-            'approver_type' => Approver::ROLE->value,
+            'role_id' => $role->id,
             'order' => 1,
             'created_by' => $user->id,
             'updated_by' => $user->id,
@@ -171,8 +169,7 @@ describe('authenticated and authorized users', function () {
                     'name',
                     'description',
                     'order',
-                    'approver_type',
-                    'approver',
+                    'role_id',
                     'created_by',
                     'updated_by',
                 ],
@@ -206,8 +203,7 @@ describe('authenticated and authorized users', function () {
         $workflow = Workflow::factory()->create();
         $step = WorkflowStep::factory()->create([
             'workflow_id' => $workflow->id,
-            'approver_id' => $role->id,
-            'approver_type' => Approver::ROLE,
+            'role_id' => $role->id,
             'created_by' => $user->id,
             'updated_by' => $user->id,
         ]);
@@ -223,8 +219,7 @@ describe('authenticated and authorized users', function () {
                 'name',
                 'description',
                 'order',
-                'approver_type',
-                'approver',
+                'role_id',
                 'created_by',
                 'updated_by',
             ],
@@ -244,8 +239,7 @@ describe('authenticated and authorized users', function () {
             'name' => 'Initial Approval',
             'description' => 'This is the first step of the workflow.',
             'order' => 1,
-            'approver_id' => $role->id,
-            'approver_type' => Approver::ROLE->value,
+            'role_id' => $role->id,
         ];
 
         $response = $this->actingAs($user)->postJson(
@@ -260,21 +254,18 @@ describe('authenticated and authorized users', function () {
                 'name',
                 'description',
                 'order',
-                'approver_type',
-                'approver',
+                'role_id',
                 'created_by',
                 'updated_by',
             ],
         ]);
 
         expect($response['data']['name'])->toBe('Initial Approval');
-        expect($response['data']['approver_type'])->toBe(Approver::ROLE->value);
 
         $this->assertDatabaseHas('workflow_steps', [
             'workflow_id' => $workflow->id,
             'name' => 'Initial Approval',
-            'approver_id' => $role->id,
-            'approver_type' => Approver::ROLE->value,
+            'role_id' => $role->id,
         ]);
     });
 
@@ -291,8 +282,7 @@ describe('authenticated and authorized users', function () {
             'name' => 'Original Step',
             'description' => 'Original description',
             'order' => 1,
-            'approver_id' => $originalRole->id,
-            'approver_type' => Approver::ROLE,
+            'role_id' => $originalRole->id,
             'created_by' => $user->id,
             'updated_by' => $user->id,
         ]);
@@ -301,8 +291,7 @@ describe('authenticated and authorized users', function () {
             'name' => 'Updated Step Name',
             'description' => 'Updated step description',
             'order' => 2,
-            'approver_id' => $newRole->id,
-            'approver_type' => Approver::ROLE->value,
+            'role_id' => $newRole->id,
         ];
 
         $response = $this->putJson(route('workflows.steps.update', [$workflow->id, $step->id]), $updatePayload);
@@ -314,8 +303,7 @@ describe('authenticated and authorized users', function () {
                 'name',
                 'description',
                 'order',
-                'approver_type',
-                'approver',
+                'role_id',
                 'created_by',
                 'updated_by',
             ],
@@ -324,15 +312,13 @@ describe('authenticated and authorized users', function () {
         expect($response['data']['name'])->toBe('Updated Step Name');
         expect($response['data']['description'])->toBe('Updated step description');
         expect($response['data']['order'])->toBe(2);
-        expect($response['data']['approver_type'])->toBe(Approver::ROLE->value);
 
         $this->assertDatabaseHas('workflow_steps', [
             'id' => $step->id,
             'name' => 'Updated Step Name',
             'description' => 'Updated step description',
             'order' => 2,
-            'approver_id' => $newRole->id,
-            'approver_type' => Approver::ROLE,
+            'role_id' => $newRole->id,
         ]);
     });
 
@@ -377,10 +363,6 @@ describe('authenticated and authorized users', function () {
             ['name' => str_repeat('a', 256)],
             'name',
         ],
-        'invalid approver type' => [
-            ['approver_type' => 'INVALID_ENUM'],
-            'approver_type',
-        ],
         'non-existent workflow' => [
             ['workflow_id' => 9999],
             'workflow_id',
@@ -388,10 +370,6 @@ describe('authenticated and authorized users', function () {
         'non-integer order' => [
             ['order' => 'first'],
             'order',
-        ],
-        'non-integer approver_id' => [
-            ['approver_id' => 'string'],
-            'approver_id',
         ],
         'description too long' => [
             ['description' => str_repeat('x', 1001)],
@@ -405,8 +383,7 @@ describe('authenticated and authorized users', function () {
             'name' => 'Step A',
             'description' => 'Optional desc',
             'order' => 1,
-            'approver_type' => Approver::USER->value,
-            'approver_id' => 1,
+            'role_id' => 1,
         ];
 
         $payload = array_merge($validPayload, $override);
@@ -431,8 +408,7 @@ describe('authenticated and authorized users', function () {
             'name' => 'Valid Step',
             'description' => 'Valid desc',
             'order' => 1,
-            'approver_type' => Approver::USER,
-            'approver_id' => 1,
+            'role_id' => 1,
             'created_by' => $this->user->id,
             'updated_by' => $this->user->id,
         ]);
@@ -447,10 +423,6 @@ describe('authenticated and authorized users', function () {
             ['name' => str_repeat('x', 256)],
             'name',
         ],
-        'invalid approver type' => [
-            ['approver_type' => 'INVALID'],
-            'approver_type',
-        ],
         'non-existent workflow' => [
             ['workflow_id' => 9999],
             'workflow_id',
@@ -460,8 +432,8 @@ describe('authenticated and authorized users', function () {
             'order',
         ],
         'non-integer approver_id' => [
-            ['approver_id' => 'string'],
-            'approver_id',
+            ['role_id' => 'string'],
+            'role_id',
         ],
         'description too long' => [
             ['description' => str_repeat('y', 1001)],
@@ -475,8 +447,7 @@ describe('authenticated and authorized users', function () {
             'name' => 'Updated Name',
             'description' => 'Updated desc',
             'order' => 2,
-            'approver_type' => Approver::USER->value,
-            'approver_id' => 1,
+            'role_id' => 1,
         ];
 
         $payload = array_merge($validPayload, $override);

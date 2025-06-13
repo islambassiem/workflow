@@ -5,6 +5,7 @@ use App\Models\Workflow;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Role;
 
 return new class extends Migration
 {
@@ -19,8 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedTinyInteger('order')->default(1);
-            $table->string('approver_type');
-            $table->unsignedBigInteger('approver_id');
+            $table->foreignIdFor(Role::class)->nullable()->constrained();
             $table->foreignIdFor(User::class, 'created_by')->constrained();
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained();
             $table->timestamps();

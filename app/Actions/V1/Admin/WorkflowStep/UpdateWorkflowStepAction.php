@@ -18,6 +18,6 @@ class UpdateWorkflowStepAction
         $attributes['updated_by'] = Auth::id();
         $step->update($attributes);
 
-        return $step->load(['workflow', 'approver', 'createdBy', 'updatedBy']);
+        return $step->load(['workflow', 'createdBy', 'updatedBy']);
     }
 }

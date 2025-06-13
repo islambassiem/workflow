@@ -26,7 +26,8 @@ class StoreWorkflowStepRequest extends FormRequest
         return [
             'workflow_request_id' => ['required', 'exists:workflow_requests,id'],
             'workflow_step_id' => ['required', 'exists:workflow_steps,id'],
-            'approver_id' => ['required', 'exists:users,id'],
+            'role_id' => ['required', 'exists:roles,id'],
+            'action_by' => ['nullable', 'exists:users,id'],
             'status' => ['required', Rule::enum(Status::class)],
             'comment' => ['nullable', 'max:1000'],
             'approved_at' => ['nullable', 'date'],

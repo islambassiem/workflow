@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\User;
 use App\Models\WorkflowRequest;
 use App\Models\WorkflowStep;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Role;
 
 return new class extends Migration
 {
@@ -18,8 +20,8 @@ return new class extends Migration
             $table->foreignIdFor(WorkflowRequest::class)->constrained();
             $table->foreignIdFor(WorkflowStep::class)->constrained();
             $table->unsignedTinyInteger('order');
-            $table->string('approver_type');
-            $table->unsignedBigInteger('approver_id');
+            $table->foreignIdFor(Role::class)->nullable()->constrained();
+            $table->foreignIdFor(User::class, 'action_by')->nullable()->constrained();
             $table->unsignedTinyInteger('status')->default(1);
             $table->text('comment')->nullable();
             $table->timestamp('approved_at')->nullable();

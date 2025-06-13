@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\V1\Admin;
 
-use App\Enums\Approver;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateWorkflowStepRequest extends FormRequest
 {
@@ -28,8 +26,7 @@ class UpdateWorkflowStepRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
             'order' => ['required', 'integer'],
-            'approver_type' => ['required', Rule::enum(Approver::class)],
-            'approver_id' => ['required', 'integer'],
+            'role_id' => ['required', 'exists:roles,id'],
             'created_by' => ['nullable', 'exists:users,id'],
             'updated_by' => ['nullable', 'exists:users,id'],
         ];

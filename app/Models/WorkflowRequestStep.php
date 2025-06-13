@@ -6,6 +6,7 @@ use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Permission\Models\Role;
 
 class WorkflowRequestStep extends Model
 {
@@ -16,8 +17,8 @@ class WorkflowRequestStep extends Model
         'workflow_request_id',
         'workflow_step_id',
         'order',
-        'approver_type',
-        'approver_id',
+        'role_id',
+        'action_by',
         'status',
         'comment',
         'approved_at',
@@ -50,10 +51,18 @@ class WorkflowRequestStep extends Model
     }
 
     /**
+     * @return BelongsTo<Role, $this>
+     */
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
      * @return BelongsTo<User, $this>
      */
-    public function approver(): BelongsTo
+    public function actionBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'approver_id');
+        return $this->belongsTo(User::class, 'action_by');
     }
 }
