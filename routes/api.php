@@ -5,11 +5,13 @@ use App\Http\Controllers\Api\V1\Admin\WorkflowStepController;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\LogoutController;
 use App\Http\Controllers\Api\V1\WorkflowRequestController;
+use App\Http\Resources\V1\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/user', function (Request $request) {
-    return $request->user();
+    return new UserResource($request->user()->load(['roles', 'head']));
 })->middleware('auth:sanctum');
 
 Route::post('login', LoginController::class)->name('login');
