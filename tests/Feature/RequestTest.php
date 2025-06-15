@@ -2,11 +2,15 @@
 
 use App\Enums\Priority;
 use App\Enums\Status;
+use App\Mail\WorkflowRequestMail;
 use App\Models\User;
 use App\Models\Workflow;
 use App\Models\WorkflowRequest;
+use App\Models\WorkflowRequestStep;
+use App\Services\V1\StepApproverUserService;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\WorkflowSeeder;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 describe('authentication', function () {
@@ -86,16 +90,25 @@ describe('users can access requests', function () {
     });
 
     test('authenticated user can create a request', function () {
-        $this->seed([UserSeeder::class, WorkflowSeeder::class]);
+        Mail::fake();
+        $this->seed();
         $user = User::factory()->create();
         $response = $this->actingAs($user)->postJson(route('requests.store'), [
             'workflow_id' => Workflow::first()->id,
         ]);
+        $firstStep = WorkflowRequestStep::where('workflow_request_id', $response['id'])->first();
+        $approvers = (new StepApproverUserService($firstStep))->handle();
 
         $response->assertStatus(201);
         expect($response['status'])->toBe(Status::PENDING->value);
         expect($response['priority'])->toBe(Priority::LOW->value);
         expect($response['data'])->toBeNull();
+
+        Mail::assertQueued(WorkflowRequestMail::class, function ($mail) use ($approvers, $user) {
+            return $mail->hasTo($approvers->pluck('email')->toArray()) &&
+                $mail->hasCc($user->email) &&
+                $mail->assertSeeInHtml('View Request');
+        });
     });
 
     test('authenticated user can delete a request', function () {

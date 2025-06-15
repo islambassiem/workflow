@@ -9,7 +9,6 @@ use App\Http\Resources\V1\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/user', function (Request $request) {
     return new UserResource($request->user()->load(['roles', 'head']));
 })->middleware('auth:sanctum');

@@ -55,7 +55,7 @@ class WorkflowRequest extends Model
      */
     public function steps(): HasMany
     {
-        return $this->hasMany(WorkflowRequestStep::class);
+        return $this->hasMany(WorkflowRequestStep::class)->orderBy('order');
     }
 
     public function currentStep(): WorkflowRequestStep

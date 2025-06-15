@@ -10,11 +10,14 @@ use App\Actions\V1\WorkflowRequestSteps\StoreStepsAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreRequestRequest;
 use App\Http\Resources\V1\RequestResource;
+use App\Mail\WorkflowRequestMail;
 use App\Models\WorkflowRequest;
+use App\Services\V1\StepApproverUserService;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class WorkflowRequestController extends Controller
 {
@@ -39,6 +42,13 @@ class WorkflowRequestController extends Controller
 
             return $workflowRequest;
         });
+
+        $firstStep = $insertedWorkflowRequest->load(['steps', 'workflow'])->steps->first();
+
+        $approvers = (new StepApproverUserService($firstStep))->handle();
+        Mail::to($approvers)
+            ->cc(Auth::user()->email)
+            ->send((new WorkflowRequestMail($firstStep, Auth::user()->name))->afterCommit());
 
         return new RequestResource($insertedWorkflowRequest);
     }
