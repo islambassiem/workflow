@@ -19,6 +19,7 @@ class WorkflowResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'steps_count' => $this->steps_count,
             'created_by' => new UserListResource(User::find($this->created_by)),
             'updated_by' => new UserListResource(User::find($this->updated_by)),
         ];

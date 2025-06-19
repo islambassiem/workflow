@@ -20,11 +20,11 @@ class Workflow extends Model
     ];
 
     /**
-     * @return HasMany<Workflow, $this>
+     * @return HasMany<WorkflowStep, $this>
      */
     public function steps(): HasMany
     {
-        return $this->hasMany(Workflow::class);
+        return $this->hasMany(WorkflowStep::class);
     }
 
     /**

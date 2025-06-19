@@ -101,15 +101,16 @@ describe('authorized users can access workflows', function () {
         $this->seed();
         $admin = User::where('name', 'admin')->first();
         $response = $this->actingAs($admin)->getJson(route('workflows.index'));
-        $workflow = Workflow::first();
+        $workflow = $response->json('data')[0];
         $perPage = config('app.perPage');
 
         $response->assertStatus(200)
             ->assertJsonPath('meta.last_page', (int) ceil(config('app.seederCount') / $perPage))
             ->assertJsonCount($perPage, 'data')
-            ->assertJsonPath('data.0.id', $workflow->id)
-            ->assertJsonPath('data.0.name', $workflow->name)
-            ->assertJsonPath('data.0.description', $workflow->description);
+            ->assertJsonPath('data.0.id', $workflow['id'])
+            ->assertJsonPath('data.0.name', $workflow['name'])
+            ->assertJsonPath('data.0.steps_count', $workflow['steps_count'])
+            ->assertJsonPath('data.0.description', $workflow['description']);
     });
 
     test('authorized users can show a show a workflow', function () {

@@ -11,10 +11,10 @@ class IndexWorkflowAction
     /**
      * @return LengthAwarePaginator<int, Workflow>
      */
-    public function handle(): LengthAwarePaginator
+    public function handle()
     {
         Gate::authorize('view_any_workflow', Workflow::class);
 
-        return Workflow::paginate(config('app.perPage'));
+        return Workflow::withCount('steps')->paginate(config('app.perPage'));
     }
 }
