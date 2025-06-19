@@ -102,10 +102,11 @@ describe('authorized users can access workflows', function () {
         $admin = User::where('name', 'admin')->first();
         $response = $this->actingAs($admin)->getJson(route('workflows.index'));
         $workflow = Workflow::first();
+        $perPage = config('app.perPage');
 
         $response->assertStatus(200)
-            ->assertJsonPath('meta.last_page', 2)
-            ->assertJsonCount(15, 'data')
+            ->assertJsonPath('meta.last_page', (int) ceil(config('app.seederCount') / $perPage))
+            ->assertJsonCount($perPage, 'data')
             ->assertJsonPath('data.0.id', $workflow->id)
             ->assertJsonPath('data.0.name', $workflow->name)
             ->assertJsonPath('data.0.description', $workflow->description);

@@ -56,6 +56,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Model per page custome value
+    |--------------------------------------------------------------------------
+    |
+    | This value is a global per page value for any given model
+    |
+    */
+    'perPage' => env('APP_PER_PAGE', 5),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model per page custome value
+    |--------------------------------------------------------------------------
+    |
+    | This value is a global value for how many records should be seeded to the database
+    |
+    */
+    'seederCount' => env('APP_SEEDER_COUNT', 20),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

@@ -15,6 +15,6 @@ class IndexWorkflowAction
     {
         Gate::authorize('view_any_workflow', Workflow::class);
 
-        return Workflow::paginate();
+        return Workflow::paginate(config('app.perPage'));
     }
 }
