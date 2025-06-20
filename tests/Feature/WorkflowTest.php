@@ -110,6 +110,8 @@ describe('authorized users can access workflows', function () {
             ->assertJsonPath('data.0.id', $workflow['id'])
             ->assertJsonPath('data.0.name', $workflow['name'])
             ->assertJsonPath('data.0.steps_count', $workflow['steps_count'])
+            ->assertJsonPath('data.0.updated_at', $workflow['updated_at'])
+            ->assertJsonPath('data.0.created_at', $workflow['created_at'])
             ->assertJsonPath('data.0.description', $workflow['description']);
     });
 
@@ -123,6 +125,8 @@ describe('authorized users can access workflows', function () {
         $response->assertStatus(200)
             ->assertJsonPath('data.id', $workflow->id)
             ->assertJsonPath('data.name', $workflow->name)
+            ->assertJsonPath('data.created_at', $workflow->created_at)
+            ->assertJsonPath('data.updated_at', $workflow->updated_at)
             ->assertJsonPath('data.description', $workflow->description);
     });
 
