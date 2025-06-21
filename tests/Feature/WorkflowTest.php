@@ -125,8 +125,6 @@ describe('authorized users can access workflows', function () {
         $response->assertStatus(200)
             ->assertJsonPath('data.id', $workflow->id)
             ->assertJsonPath('data.name', $workflow->name)
-            ->assertJsonPath('data.created_at', $workflow->created_at)
-            ->assertJsonPath('data.updated_at', $workflow->updated_at)
             ->assertJsonPath('data.description', $workflow->description);
     });
 

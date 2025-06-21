@@ -11,6 +11,7 @@ use App\Http\Requests\V1\Admin\StoreWorkflowRequest;
 use App\Http\Requests\V1\Admin\UpdateWorkflowRequest;
 use App\Http\Resources\V1\WorkflowResource;
 use App\Models\Workflow;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class WorkflowController extends Controller
@@ -18,9 +19,9 @@ class WorkflowController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexWorkflowAction $action): JsonResource
+    public function index(IndexWorkflowAction $action, Request $request): JsonResource
     {
-        $workflows = $action->handle();
+        $workflows = $action->handle($request);
 
         return WorkflowResource::collection($workflows);
     }
