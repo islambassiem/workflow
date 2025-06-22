@@ -27,7 +27,18 @@ class WorkflowStepController extends Controller
 
     public function store(StoreWorkflowStepRequest $request, StoreWorkflowStepAction $action): JsonResource
     {
-        $step = $action->handle($request->validated());
+        $attributes = $request->validated();
+
+        $workflow_id = $request->route('workflow');
+        $order = (Workflow::with('steps')
+            ->where('id', $workflow_id)
+            ->first()?->steps)
+            ->max('order') + 1;
+
+        $attributes['order'] = $order;
+        $attributes['workflow_id'] = $workflow_id;
+
+        $step = $action->handle($attributes);
 
         return new WorkflowStepResource($step);
     }

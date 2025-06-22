@@ -23,10 +23,8 @@ class StoreWorkflowStepRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'workflow_id' => ['required', 'exists:workflows,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'order' => ['required', 'integer'],
             'role_id' => ['required', 'exists:roles,id'],
             'created_by' => ['nullable', 'exists:users,id'],
             'updated_by' => ['nullable', 'exists:users,id'],

@@ -363,14 +363,6 @@ describe('authenticated and authorized users', function () {
             ['name' => str_repeat('a', 256)],
             'name',
         ],
-        'non-existent workflow' => [
-            ['workflow_id' => 9999],
-            'workflow_id',
-        ],
-        'non-integer order' => [
-            ['order' => 'first'],
-            'order',
-        ],
         'description too long' => [
             ['description' => str_repeat('x', 1001)],
             'description',
