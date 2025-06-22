@@ -13,7 +13,7 @@ class ShowWorkflowStepActionhp
         Gate::authorize('view_a_workflow_step', $step);
 
         return WorkflowStep::query()
-            ->with(['workflow', 'createdBy', 'updatedBy'])
+            ->with(['workflow', 'role', 'createdBy', 'updatedBy'])
             ->where('workflow_id', $workflow->id)
             ->first();
     }

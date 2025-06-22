@@ -17,7 +17,7 @@ class IndexWorkflowStepAction
         Gate::authorize('view_any_workflow_step', WorkflowStep::class);
 
         return WorkflowStep::where('workflow_id', $workflow->id)
-            ->with(['workflow', 'createdBy', 'updatedBy'])
+            ->with(['workflow', 'role', 'createdBy', 'updatedBy'])
             ->orderBy('order')
             ->paginate();
     }

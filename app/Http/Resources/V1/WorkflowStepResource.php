@@ -24,7 +24,7 @@ class WorkflowStepResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'order' => $this->order,
-            'role_id' => $this->role_id,
+            'role' => new RoleResource($this->whenLoaded('role')),
             'created_by' => new UserListResource($this->whenLoaded('createdBy')),
             'updated_by' => new UserListResource($this->whenLoaded('updatedBy')),
         ];

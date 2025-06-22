@@ -18,6 +18,6 @@ class StoreWorkflowStepAction
         $attributes['created_by'] = Auth::id();
         $step = WorkflowStep::create($attributes);
 
-        return $step->load(['workflow', 'createdBy', 'updatedBy']);
+        return $step->load(['workflow', 'role', 'createdBy', 'updatedBy']);
     }
 }
