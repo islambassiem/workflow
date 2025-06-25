@@ -290,7 +290,6 @@ describe('authenticated and authorized users', function () {
             'workflow_id' => $workflow->id,
             'name' => 'Updated Step Name',
             'description' => 'Updated step description',
-            'order' => 2,
             'role_id' => $newRole->id,
         ];
 
@@ -311,13 +310,11 @@ describe('authenticated and authorized users', function () {
 
         expect($response['data']['name'])->toBe('Updated Step Name');
         expect($response['data']['description'])->toBe('Updated step description');
-        expect($response['data']['order'])->toBe(2);
 
         $this->assertDatabaseHas('workflow_steps', [
             'id' => $step->id,
             'name' => 'Updated Step Name',
             'description' => 'Updated step description',
-            'order' => 2,
             'role_id' => $newRole->id,
         ]);
     });

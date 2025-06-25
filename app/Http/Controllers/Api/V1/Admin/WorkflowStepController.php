@@ -52,7 +52,11 @@ class WorkflowStepController extends Controller
 
     public function update(UpdateWorkflowStepRequest $request, Workflow $workflow, WorkflowStep $step, UpdateWorkflowStepAction $action): JsonResource
     {
-        $step = $action->handle($step, $request->validated());
+        // $workflow_id = $request->route('workflow');
+        $attributes = $request->validated();
+        $attributes['workflow_id'] = $workflow->id;
+
+        $step = $action->handle($step, $attributes);
 
         return new WorkflowStepResource($step);
     }
