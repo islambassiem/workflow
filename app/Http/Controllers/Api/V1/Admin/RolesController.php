@@ -9,7 +9,7 @@ use App\Actions\V1\Admin\Role\UpdateRoleAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Admin\StoreRoleRequest;
 use App\Http\Requests\V1\Admin\UpdateRoleRequest;
-use App\Http\Resources\RoleResource;
+use App\Http\Resources\V1\RoleResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\Permission\Models\Role;

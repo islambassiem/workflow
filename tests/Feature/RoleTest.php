@@ -102,6 +102,7 @@ describe('authenticated and authorized users', function () {
 
         $response->assertStatus(200)
             ->assertJsonStructure([
+                'data',
                 'meta',
                 'links',
             ]);
@@ -109,6 +110,7 @@ describe('authenticated and authorized users', function () {
         expect($response['data'][0]['id'])->toBe($role->id);
         expect($response['data'][0]['name'])->toBe($role->name);
         expect($response['data'][0]['name_ar'])->toBe($role->name_ar);
+        expect($response['data'][0]['permissions'])->toBeArray();
     });
 
     test('authenticated and auhtorized users can store a role', function () {
