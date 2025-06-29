@@ -2,7 +2,7 @@
 
 namespace App\Actions\V1\Admin\Role;
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 
@@ -11,14 +11,14 @@ class IndexRoleAction
     /**
      * Handle the action to retrieve a paginated list of roles.
      *
-     * @return LengthAwarePaginator<int, Role>
+     * @return Collection<int, Role>
      */
-    public function handle(): LengthAwarePaginator
+    public function handle(): Collection
     {
         Gate::authorize('view_any_role', Role::class);
 
         return Role::with('permissions')
             ->latest()
-            ->paginate(config('app.perPage'));
+            ->get();
     }
 }

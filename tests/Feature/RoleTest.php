@@ -120,8 +120,6 @@ describe('authenticated and authorized users', function () {
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data',
-                'meta',
-                'links',
             ]);
 
         expect($response['data'][0]['id'])->toBe($role->id);
