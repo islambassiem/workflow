@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             WorkflowStepPermissionSeeder::class,
             RolePermissionSeeder::class,
             PermissionPermissionSeeder::class,
+            UserPermissionSeeder::class,
         ]);
     }
 }

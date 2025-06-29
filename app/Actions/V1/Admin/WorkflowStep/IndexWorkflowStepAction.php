@@ -19,6 +19,6 @@ class IndexWorkflowStepAction
         return WorkflowStep::where('workflow_id', $workflow->id)
             ->with(['workflow', 'role', 'createdBy', 'updatedBy'])
             ->orderBy('order')
-            ->paginate();
+            ->paginate(config('app.perPage'));
     }
 }

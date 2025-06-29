@@ -21,7 +21,7 @@ class WorkflowController extends Controller
      */
     public function index(IndexWorkflowAction $action, Request $request): JsonResource
     {
-        $workflows = $action->handle($request);
+        $workflows = $request->has('search') ? $action->handle($request->search) : $action->handle();
 
         return WorkflowResource::collection($workflows);
     }

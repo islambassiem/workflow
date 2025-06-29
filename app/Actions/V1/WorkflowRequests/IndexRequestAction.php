@@ -15,6 +15,6 @@ class IndexRequestAction
         return Auth::user()
             ->requests()
             ->with(['workflow', 'user'])
-            ->paginate();
+            ->paginate(config('app.perPage'));
     }
 }

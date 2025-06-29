@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\Admin\PermissionController;
 use App\Http\Controllers\Api\V1\Admin\RolesController;
+use App\Http\Controllers\Api\V1\Admin\UserController;
 use App\Http\Controllers\Api\V1\Admin\WorkflowController;
 use App\Http\Controllers\Api\V1\Admin\WorkflowStepController;
 use App\Http\Controllers\Api\V1\LoginController;
@@ -24,4 +25,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('requests', WorkflowRequestController::class)->except('update');
     Route::apiResource('roles', RolesController::class);
     Route::apiResource('permissions', PermissionController::class)->only('index');
+    Route::apiResource('users', UserController::class)->only('index', 'update');
 });

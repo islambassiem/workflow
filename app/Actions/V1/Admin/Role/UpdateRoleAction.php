@@ -15,6 +15,7 @@ class UpdateRoleAction
         Gate::authorize('update_a_role', Role::class);
 
         $role->syncPermissions($attributes);
+        $role->touch();
 
         $role->load('permissions');
 
