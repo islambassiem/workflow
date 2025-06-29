@@ -17,6 +17,6 @@ class IndexRoleAction
     {
         Gate::authorize('view_any_role', Role::class);
 
-        return Role::with('permissions')->paginate();
+        return Role::with('permissions')->latest()->paginate();
     }
 }

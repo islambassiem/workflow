@@ -21,6 +21,13 @@ class User extends Authenticatable
 
     use HasRoles;
 
+    protected string $guard_name = 'sanctum';
+
+    protected function getDefaultGuardName(): string
+    {
+        return $this->guard_name;
+    }
+
     /**
      * The attributes that are mass assignable.
      *

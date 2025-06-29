@@ -22,6 +22,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('workflows', WorkflowController::class)->except('destroy');
     Route::apiResource('workflows.steps', WorkflowStepController::class);
     Route::apiResource('requests', WorkflowRequestController::class)->except('update');
-    Route::apiResource('roles', RolesController::class)->except('show');
+    Route::apiResource('roles', RolesController::class);
     Route::apiResource('permissions', PermissionController::class)->only('index');
 });

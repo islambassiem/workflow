@@ -20,7 +20,7 @@ class PermissionPermissionSeeder extends Seeder
         $role = Role::where('name', 'admin')->first();
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::create(['name' => $permission, 'guard_name' => 'sanctum']);
             $role->givePermissionTo($permission);
         }
     }

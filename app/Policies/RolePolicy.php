@@ -15,6 +15,11 @@ class RolePolicy
         return $user->can('view_any_role', Role::class);
     }
 
+    public function view(User $user, Role $role): bool
+    {
+        return $user->can('view_a_role', $role);
+    }
+
     /**
      * Determine whether the user can create models.
      */

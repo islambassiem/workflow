@@ -16,6 +16,14 @@ describe('authentication', function () {
         $response->assertStatus(401);
     });
 
+    test('guests cannot show a single role', function () {
+        Role::create(['name' => 'admin']);
+
+        $response = $this->getJson(route('roles.show', 1));
+
+        $response->assertStatus(401);
+    });
+
     test('guests cannot store a role', function () {
         $role = Role::make([
             'name' => 'role',
@@ -54,6 +62,14 @@ describe('authorization', function () {
         $this->seed(RoleSeeder::class);
         $user = User::factory()->create();
         $response = $this->actingAs($user)->getJson(route('roles.index'));
+
+        $response->assertStatus(403);
+    });
+
+    test('unauthorized users cannot show a single role', function () {
+        Role::create(['name' => 'admin', 'guard_name' => 'sanctum']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->getJson(route('roles.show', 1));
 
         $response->assertStatus(403);
     });
@@ -114,6 +130,19 @@ describe('authenticated and authorized users', function () {
         expect($response['data'][0]['permissions'])->toBeArray();
     });
 
+    test('authenticated and auhtorized users cannot store a role with invalid data', function ($role) {
+
+        $this->seed();
+        $admin = User::role('admin')->first();
+
+        $response = $this->actingAs($admin)->postJson(route('roles.store'), $role);
+
+        $response->assertStatus(422);
+    })->with([
+        [['name' => 'role']],
+        [['name_ar' => 'role in arabic']],
+    ]);
+
     test('authenticated and auhtorized users can store a role', function () {
         $this->seed();
         $admin = User::role('admin')->first();
@@ -134,24 +163,24 @@ describe('authenticated and authorized users', function () {
         expect($response['data']['name_ar'])->toBe($role['name_ar']);
     });
 
-    test('authenticated and authorized users can update a role', function () {
+    test('authorized users cann show a single role', function () {
         $this->seed();
         $admin = User::role('admin')->first();
-        $role = Role::make([
-            'name' => 'updated role',
-            'name_ar' => 'updated role in Arabic',
-        ])->toArray();
+        $role = Role::first();
 
-        $response = $this->actingAs($admin)->putJson(route('roles.update', 1), $role);
+        $role['permissions'] = [1, 2, 3];
 
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('roles', [
-            'name' => 'updated role',
-            'name_ar' => 'updated role in Arabic',
-        ]);
+        $response = $this->actingAs($admin)->getJson(route('roles.show', $role));
 
-        expect($response['data']['name'])->toBe($role['name']);
-        expect($response['data']['name_ar'])->toBe($role['name_ar']);
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data',
+            ]);
+
+        expect($response['data']['id'])->toBe($role->id);
+        expect($response['data']['name'])->toBe($role->name);
+        expect($response['data']['name_ar'])->toBe($role->name_ar);
+        expect($response['data']['permissions'])->toBeArray();
     });
 
     test('authenticated and authorized users cannot delete a referenced role', function () {
@@ -194,5 +223,4 @@ describe('authenticated and authorized users', function () {
             ->assertDatabaseEmpty('roles')
             ->assertDatabaseMissing('model_has_roles', ['role_id' => $role->id]);
     });
-
 });

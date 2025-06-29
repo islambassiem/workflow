@@ -18,12 +18,13 @@ class RolePermissionSeeder extends Seeder
             'create_a_role',
             'update_a_role',
             'delete_a_role',
+            'view_a_role',
         ];
 
         $role = Role::where('name', 'admin')->first();
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::create(['name' => $permission, 'guard_name' => 'sanctum']);
             $role->givePermissionTo($permission);
         }
     }

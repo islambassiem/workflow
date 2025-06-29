@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Actions\V1\Admin\Role\DestroyRoleAction;
 use App\Actions\V1\Admin\Role\IndexRoleAction;
+use App\Actions\V1\Admin\Role\ShowRoleAction;
 use App\Actions\V1\Admin\Role\StoreRoleAction;
 use App\Actions\V1\Admin\Role\UpdateRoleAction;
 use App\Http\Controllers\Controller;
@@ -32,6 +33,13 @@ class RolesController extends Controller
     public function store(StoreRoleRequest $request, StoreRoleAction $action): JsonResource
     {
         $role = $action->handle($request->validated());
+
+        return new RoleResource($role);
+    }
+
+    public function show(Role $role, ShowRoleAction $action): JsonResource
+    {
+        $role = $action->handle($role);
 
         return new RoleResource($role);
     }
