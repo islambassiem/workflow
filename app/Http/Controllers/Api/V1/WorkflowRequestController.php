@@ -13,10 +13,10 @@ use App\Http\Resources\V1\RequestResource;
 use App\Mail\WorkflowRequestMail;
 use App\Models\WorkflowRequest;
 use App\Services\V1\StepApproverUserService;
-use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class WorkflowRequestController extends Controller
