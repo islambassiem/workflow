@@ -53,6 +53,7 @@ describe('users can access requests', function () {
         expect($response['data'])->each(function ($item) use ($user) {
             expect($item->value['user']['id'])->toBe($user->id);
             expect($item->value['user']['id'])->not->toBe(User::factory()->create()->id);
+            expect($item->value['steps_count'])->toBeNumeric();
         });
     });
 
@@ -103,6 +104,8 @@ describe('users can access requests', function () {
         expect($response['status'])->toBe(Status::PENDING->lable());
         expect($response['priority'])->toBe(Priority::LOW->lable());
         expect($response['data'])->toBeNull();
+        expect($response['steps_count'])->toBeNumeric();
+        expect($response['steps_count'])->toBeGreaterThan(0);
 
         // Mail::assertQueued(WorkflowRequestMail::class, function ($mail) use ($approvers, $user) {
         //     return $mail->hasTo($approvers->pluck('email')->toArray()) &&

@@ -11,6 +11,6 @@ class ShowRequestAction
     {
         Gate::authorize('view', $request);
 
-        return $request->load('workflow', 'user');
+        return $request->load('workflow', 'user')->loadCount('steps');
     }
 }

@@ -34,6 +34,16 @@ class WorkflowRequestPolicy
     }
 
     /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, WorkflowRequest $workflowRequest): bool
+    {
+        $owns_request = $user->id === $workflowRequest->user_id;
+
+        return $owns_request;
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, WorkflowRequest $workflowRequest): bool
