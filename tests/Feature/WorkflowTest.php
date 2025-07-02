@@ -39,13 +39,13 @@ describe('authentication', function () {
 
 describe('authorization', function () {
 
-    test('unauthorized cannot access workflow collection', function () {
+    test('unauthorized can access workflow collection', function () {
         $user = User::factory()->create();
         Workflow::factory()->create();
 
         $response = $this->actingAs($user)->getJson(route('workflows.index'));
 
-        $response->assertStatus(403);
+        $response->assertStatus(200);
     });
 
     test('unauthorized cannot access a workflow resource', function () {

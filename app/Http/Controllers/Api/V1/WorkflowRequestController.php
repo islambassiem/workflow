@@ -40,7 +40,7 @@ class WorkflowRequestController extends Controller
             $workflowRequest = $action->handle(Auth::user(), $request->validated());
             (new StoreStepsAction($workflowRequest))->handle();
 
-            return $workflowRequest;
+            return $workflowRequest->loadCount('steps');
         });
 
         $firstStep = $insertedWorkflowRequest->load(['steps', 'workflow'])->steps->first();

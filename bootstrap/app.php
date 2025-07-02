@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AlwaysAcceptJson;
+use App\Http\Middleware\Locale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         apiPrefix: 'api/v1',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->api(prepend: [AlwaysAcceptJson::class]);
+        $middleware->api(prepend: [AlwaysAcceptJson::class, Locale::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {

@@ -100,8 +100,8 @@ describe('users can access requests', function () {
         $approvers = (new StepApproverUserService($firstStep))->handle();
 
         $response->assertStatus(201);
-        expect($response['status'])->toBe(Status::PENDING->value);
-        expect($response['priority'])->toBe(Priority::LOW->value);
+        expect($response['status'])->toBe(Status::PENDING->lable());
+        expect($response['priority'])->toBe(Priority::LOW->lable());
         expect($response['data'])->toBeNull();
 
         // Mail::assertQueued(WorkflowRequestMail::class, function ($mail) use ($approvers, $user) {
