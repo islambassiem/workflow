@@ -16,6 +16,7 @@ class IndexRequestAction
             ->requests()
             ->with(['workflow', 'user'])
             ->withCount('steps')
+            ->latest()
             ->paginate(config('app.perPage'));
     }
 }

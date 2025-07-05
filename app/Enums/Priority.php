@@ -10,12 +10,18 @@ enum Priority: int
 
     case HIGH = 3;
 
-    public function lable(): string
+    case URGENT = 4;
+
+    /**
+     * @return array<string, string>
+     */
+    public function lable(): array
     {
         return match ($this) {
-            Priority::LOW => app()->getLocale() == 'en' ? 'Low' : 'منخفض',
-            Priority::MEDIUM => app()->getLocale() == 'en' ? 'Medium' : 'متوسط',
-            Priority::HIGH => app()->getLocale() == 'en' ? 'High' : 'عالي',
+            Priority::LOW => ['id' => '1', 'en' => 'Low', 'ar' => 'منخفض'],
+            Priority::MEDIUM => ['id' => '2', 'en' => 'Medium', 'ar' => 'متوسط'],
+            Priority::HIGH => ['id' => '3', 'en' => 'High', 'ar' => 'مرتفع'],
+            Priority::URGENT => ['id' => '4', 'en' => 'Urgent', 'ar' => 'عاجل'],
         };
     }
 }

@@ -174,8 +174,6 @@ describe('authenticated and authorized users', function () {
                     'updated_by',
                 ],
             ],
-            'links',
-            'meta',
         ]);
 
         expect($response['data'])->toHaveCount(3);

@@ -96,7 +96,9 @@ describe('users can access requests', function () {
         $user = User::factory()->create();
         $response = $this->actingAs($user)->postJson(route('requests.store'), [
             'workflow_id' => Workflow::first()->id,
+            'priority' => Priority::LOW->value,
         ]);
+
         $firstStep = WorkflowRequestStep::where('workflow_request_id', $response['id'])->first();
         $approvers = (new StepApproverUserService($firstStep))->handle();
 

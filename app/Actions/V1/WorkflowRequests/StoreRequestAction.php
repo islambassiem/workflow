@@ -19,7 +19,7 @@ class StoreRequestAction
         Gate::authorize('create', WorkflowRequest::class);
 
         $attributes['status'] = Status::PENDING;
-        $attributes['priority'] = Priority::LOW;
+        // $attributes['priority'] = Priority::LOW;
 
         $request = $user->requests()->create($attributes);
 
