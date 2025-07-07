@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\WorkflowRequestStep;
 
-class RequestStepPolicy
+class WorkflowRequestStepPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -36,9 +36,16 @@ class RequestStepPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, WorkflowRequestStep $workflowRequestStep): bool
+    public function update(User $user, WorkflowRequestStep $step): bool
     {
-        return false;
+
+        $step->load(['role', 'request.user']);
+
+        if ($step->role->name === 'head') {
+            return $step->request->user->head_id === $user->id || $user->hasRole($step->role->name);
+        }
+
+        return $user->hasRole($step->role->name);
     }
 
     /**
