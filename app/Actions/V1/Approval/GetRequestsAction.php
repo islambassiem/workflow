@@ -4,16 +4,16 @@ namespace App\Actions\V1\Approval;
 
 use App\Models\WorkflowRequest;
 use App\Traits\AuthTrait;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class GetRequestsAction
 {
     use AuthTrait;
 
     /**
-     * @return Collection<int, WorkflowRequest>
+     * @return LengthAwarePaginator<int, WorkflowRequest>
      */
-    public function handle(): Collection
+    public function handle(): LengthAwarePaginator
     {
         $builder = WorkflowRequest::query();
 
@@ -23,14 +23,15 @@ class GetRequestsAction
                     ->whereIn('user_id', $this->subordinates())
                     ->orWhereIn('role_id', $this->authUserRoleIds());
             })
+                ->with(['user', 'workflow'])
                 ->latest()
-                ->get();
+                ->paginate(config('app.perPage'));
         }
 
         return $builder->whereHas('steps', function ($query) {
             $query->whereIn('role_id', $this->authUserRoleIds());
         })
             ->latest()
-            ->get();
+            ->paginate(config('app.perPage'));
     }
 }

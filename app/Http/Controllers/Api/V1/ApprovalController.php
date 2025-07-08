@@ -7,6 +7,7 @@ use App\Actions\V1\Approval\GetStepsAction;
 use App\Actions\V1\Approval\TakeActionAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\ApproveStepRequest;
+use App\Http\Resources\V1\ApprovalRequestResource;
 use App\Http\Resources\V1\RequestStepResource;
 use App\Models\WorkflowRequest;
 use App\Models\WorkflowRequestStep;
@@ -19,9 +20,11 @@ class ApprovalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(GetRequestsAction $action): mixed
+    public function index(GetRequestsAction $action): JsonResource
     {
-        return $action->handle();
+        $request = $action->handle();
+
+        return ApprovalRequestResource::collection($request);
     }
 
     /**
