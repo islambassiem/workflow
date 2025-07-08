@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 trait AuthTrait
@@ -13,7 +12,7 @@ trait AuthTrait
      */
     public function authUserRoleIds(): array
     {
-        return Auth::user()->roles->pluck('id')->toArray();
+        return Auth::user()->roles()->whereNot('name', 'head')->pluck('id')->toArray();
     }
 
     public function isHead(): bool
@@ -22,10 +21,10 @@ trait AuthTrait
     }
 
     /**
-     * @return Collection<int, User>
+     * @return array<int, int>
      */
-    private function subordinates(): Collection
+    private function subordinates(): array
     {
-        return User::where('head_id', Auth::user())->get();
+        return User::where('head_id', Auth::user()->id)->pluck('id')->toArray();
     }
 }
