@@ -5,7 +5,7 @@ namespace App\Actions\V1\Approval;
 use App\Models\WorkflowRequest;
 use App\Models\WorkflowRequestStep;
 use App\Traits\AuthTrait;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class GetStepsAction
 {
@@ -14,9 +14,9 @@ class GetStepsAction
     public function __construct(public WorkflowRequest $request) {}
 
     /**
-     * @return Collection<int, WorkflowRequestStep>
+     * @return LengthAwarePaginator<int, WorkflowRequestStep>
      */
-    public function handle(): Collection
+    public function handle(): LengthAwarePaginator
     {
 
         $builder = WorkflowRequestStep::where('workflow_request_id', $this->request->id);
@@ -31,12 +31,12 @@ class GetStepsAction
                         ->orWhereIn('role_id', $this->authUserRoleIds());
                 })
                 ->latest()
-                ->get();
+                ->paginate(config('app.perPage'));
         }
 
         return $builder
             ->whereIn('role_id', $this->authUserRoleIds())
             ->latest()
-            ->get();
+            ->paginate(config('app.perPage'));
     }
 }

@@ -11,7 +11,6 @@ use App\Http\Resources\V1\ApprovalRequestResource;
 use App\Http\Resources\V1\RequestStepResource;
 use App\Models\WorkflowRequest;
 use App\Models\WorkflowRequestStep;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,15 +26,12 @@ class ApprovalController extends Controller
         return ApprovalRequestResource::collection($request);
     }
 
-    /**
-     * @return Collection<int, WorkflowRequestStep>
-     */
-    public function show(WorkflowRequest $request): mixed
+    public function show(WorkflowRequest $request): JsonResource
     {
 
         $steps = (new GetStepsAction($request))->handle();
 
-        return $steps;
+        return RequestStepResource::collection($steps);
     }
 
     /**
