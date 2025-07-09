@@ -18,6 +18,7 @@ class ApprovalRequestResource extends JsonResource
             'id' => $this->id,
             'user' => new UserListResource($this->whenLoaded('user')),
             'workflow' => new WorkflowResource($this->whenLoaded('workflow')),
+            'data' => $this->data,
             'status' => $this->status->lable(),
             'priority' => $this->priority->lable(),
             'created_at' => $this->created_at,
