@@ -30,13 +30,15 @@ class GetStepsAction
                         })
                         ->orWhereIn('role_id', $this->authUserRoleIds());
                 })
-                ->latest()
+                ->with(['step'])
+                ->orderBy('order')
                 ->paginate(config('app.perPage'));
         }
 
         return $builder
             ->whereIn('role_id', $this->authUserRoleIds())
-            ->latest()
+            ->with(['step'])
+            ->orderBy('order')
             ->paginate(config('app.perPage'));
     }
 }
