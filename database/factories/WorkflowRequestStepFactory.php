@@ -27,7 +27,7 @@ class WorkflowRequestStepFactory extends Factory
             'order' => fake()->numberBetween(1, 10),
             'role_id' => Role::inRandomOrder()->first()->id,
             'action_by' => User::inRandomOrder()->first()->id,
-            'status' => fake()->randomElement(Status::class),
+            'status' => Status::PENDING->value,
             'comment' => fake()->sentences(asText: true),
             'approved_at' => fake()->dateTime(),
             'rejected_at' => fake()->dateTime(),

@@ -19,6 +19,7 @@ class RequestResource extends JsonResource
             'workflow' => new WorkflowListResource($this->whenLoaded('workflow')),
             'user' => new UserListResource($this->whenLoaded('user')),
             'steps_count' => $this->steps_count,
+            'steps' => RequestStepResource::collection($this->whenLoaded('steps')),
             'status' => $this->status->lable(),
             'priority' => $this->priority->lable(),
             'data' => $this->data,

@@ -58,8 +58,8 @@ class WorkflowRequest extends Model
         return $this->hasMany(WorkflowRequestStep::class)->orderBy('order');
     }
 
-    public function currentStep(): WorkflowRequestStep
+    public function currentStep(): ?WorkflowRequestStep
     {
-        return $this->steps()->where('status', Status::PENDING)->orderBy('id')->first();
+        return $this->steps()->where('status', Status::PENDING)->orderBy('order')->first();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\WorkflowRequestStep;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,17 +9,15 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class WorkflowRequestMail extends Mailable implements ShouldQueue
+class RequestApprovalMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(
-        public WorkflowRequestStep $step,
-        public string $requester = ''
-    ) {
+    public function __construct()
+    {
         //
     }
 
@@ -30,7 +27,7 @@ class WorkflowRequestMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Workflow Request Mail',
+            subject: 'Request Approval Mail',
         );
     }
 
@@ -39,17 +36,11 @@ class WorkflowRequestMail extends Mailable implements ShouldQueue
      */
     public function content(): Content
     {
-        $workflowName = $this->step->request->workflow->name;
-        $id = $this->step->id;
-        $actionUrl = config('app.front_end_url')."/approvals/requests/$id/steps";
-
         return new Content(
-            view: 'emails.create-request',
+            view: 'emails.request-approved',
             with: [
-                'messageLine1' => "$this->requester has created a new $workflowName request.",
-                'actionText' => 'View Request',
-                'actionUrl' => $actionUrl,
-            ],
+                'messageLine1' => 'Your request has been approved.',
+            ]
         );
     }
 

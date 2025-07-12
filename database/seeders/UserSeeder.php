@@ -25,6 +25,30 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory()->create([
+            'name' => 'hr',
+            'email' => 'hr@example.com',
+            'head_id' => 2,
+        ]);
+
+        User::factory()->create([
+            'name' => 'finance',
+            'email' => 'finance@example.com',
+            'head_id' => 2,
+        ]);
+
+        User::factory()->create([
+            'name' => 'procurment',
+            'email' => 'procurment@example.com',
+            'head_id' => 2,
+        ]);
+
+        User::factory()->create([
+            'name' => 'it',
+            'email' => 'it@example.com',
+            'head_id' => 2,
+        ]);
+
+        User::factory()->create([
             'name' => 'user',
             'email' => 'user@example.com',
             'head_id' => 2,

@@ -76,6 +76,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Front End URL
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used to generate links to the front end of the application.
+    | It is useful for generating URLs that point to the front end from
+    | the back end, such as in emails or notifications.
+    |
+    */
+    'front_end_url' => env('APP_FRONT_END_URL', 'http://localhost:5173'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

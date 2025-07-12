@@ -99,7 +99,8 @@ describe('users can access requests', function () {
             'priority' => Priority::LOW->value,
         ]);
 
-        $firstStep = WorkflowRequestStep::where('workflow_request_id', $response['id'])->first();
+        $firstStep = WorkflowRequestStep::find($response['steps'][0]['id']);
+
         $approvers = (new StepApproverUserService($firstStep))->handle();
 
         $response->assertStatus(201);
@@ -109,12 +110,17 @@ describe('users can access requests', function () {
         expect($response['steps_count'])->toBeNumeric();
         expect($response['steps_count'])->toBeGreaterThan(0);
 
-        // Mail::assertQueued(WorkflowRequestMail::class, function ($mail) use ($approvers, $user) {
-        //     return $mail->hasTo($approvers->pluck('email')->toArray()) &&
-        //         $mail->hasCc($user->email) &&
-        //         $mail->assertSeeInHtml('View Request');
-        // });
-        Mail::assertQueued(WorkflowRequestMail::class);
+        Mail::assertNothingSent(WorkflowRequestMail::class);
+        Mail::assertQueued(WorkflowRequestMail::class, function ($mail) use ($approvers, $user) {
+            $rendered = $mail->render();
+
+            return $mail->hasTo($approvers->pluck('email')->toArray()) &&
+                $mail->hasCc($user->email) &&
+                $mail->subject === 'Workflow Request Mail' &&
+                str_contains($rendered, "$user->name has created a new") &&
+                str_contains($rendered, 'View Request') &&
+                str_contains($rendered, config('app.front_end_url')."/approvals/requests/{$mail->step->id}/steps");
+        });
     });
 
     test('authenticated user can delete a request', function () {
@@ -126,5 +132,4 @@ describe('users can access requests', function () {
 
         $response->assertStatus(204);
     });
-
 });

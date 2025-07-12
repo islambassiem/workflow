@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
             'hr' => 'موارد بشرية',
             'finance' => 'مالية',
             'procurment' => 'مشتريات',
+            'it' => 'تقنية المعلومات',
         ];
 
         foreach ($roles as $role => $role_ar) {

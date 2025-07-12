@@ -18,14 +18,17 @@ class DatabaseSeeder extends Seeder
 
         $adminUser = User::where('name', 'admin')->first();
         $headUser = User::where('name', 'head')->first();
+        $hrUser = User::where('name', 'hr')->first();
+        $financeUser = User::where('name', 'finance')->first();
+        $procurmentUser = User::where('name', 'procurment')->first();
+        $ittUser = User::where('name', 'it')->first();
 
         User::find(3)->assignRole('head');
         $adminUser->assignRole('admin');
         $headUser->assignRole('head');
-
-        foreach (User::where('id', '>=', '4')->get() as $user) {
-            $user->assignRole('finance');
-        }
+        $hrUser->assignRole('hr');
+        $financeUser->assignRole('finance');
+        $procurmentUser->assignRole('procurment');
 
         $this->call([
             WorkflowSeeder::class,
