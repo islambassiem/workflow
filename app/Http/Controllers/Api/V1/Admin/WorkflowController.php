@@ -26,6 +26,13 @@ class WorkflowController extends Controller
         return WorkflowResource::collection($workflows);
     }
 
+    public function list(IndexWorkflowAction $action): JsonResource
+    {
+        $workflows = $action->handle(paginated: false);
+
+        return WorkflowResource::collection($workflows);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->post('logout', LogoutController::class)->name
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('workflows', WorkflowController::class)->except('destroy');
+    Route::get('workflows-list', [WorkflowController::class, 'list'])->name('workflows.list');
     Route::apiResource('workflows.steps', WorkflowStepController::class);
     Route::apiResource('requests', WorkflowRequestController::class)->except('update');
     Route::apiResource('requests.steps', RequestStepController::class)->only('index');

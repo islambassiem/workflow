@@ -31,6 +31,7 @@ class GetRequestsAction
         return $builder->whereHas('steps', function ($query) {
             $query->whereIn('role_id', $this->authUserRoleIds());
         })
+            ->with(['user', 'workflow'])
             ->latest()
             ->paginate(config('app.perPage'));
     }
