@@ -28,7 +28,7 @@ class StepApproverUserService
         if ($step->role->name === 'head') {
             $head = $step->request->user->load('head')->head;
 
-            return $head ? collect([$head]) : collect();
+            return collect([$head]);
         }
 
         return User::role($step->role->name)->get();

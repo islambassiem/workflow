@@ -27,9 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('requests', WorkflowRequestController::class)->except('update');
     Route::apiResource('requests.steps', RequestStepController::class)->only('index');
     Route::group(['prefix' => 'approvals'], function () {
-        Route::get('requests', [ApprovalController::class, 'index']);
-        Route::get('requests/{request}/steps', [ApprovalController::class, 'show']);
-        Route::post('requests/{request}/steps/{step}/action', [ApprovalController::class, 'update']);
+        Route::get('requests', [ApprovalController::class, 'index'])->name('approvals.index');
+        Route::get('requests/{request}/steps', [ApprovalController::class, 'show'])->name('approvals.show');
+        Route::post('requests/{request}/steps/{step}/action', [ApprovalController::class, 'update'])->name('approvals.update');
     });
     Route::apiResource('roles', RolesController::class);
     Route::apiResource('permissions', PermissionController::class)->only('index');

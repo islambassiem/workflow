@@ -14,6 +14,7 @@ use App\Mail\RequestApprovalMail;
 use App\Mail\WorkflowRequestMail;
 use App\Models\WorkflowRequest;
 use App\Models\WorkflowRequestStep;
+use App\Services\V1\StepApproverUserService;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -55,8 +56,9 @@ class ApprovalController extends Controller
         $currentStep = $request->currentStep();
 
         if ($currentStep) {
-            Mail::to($request->user->email)
-                ->cc(Auth::user()->email)
+            $approvers = (new StepApproverUserService($currentStep))->handle();
+            Mail::to($approvers->pluck('email')->toArray())
+                ->cc($request->user->email)
                 ->queue((new WorkflowRequestMail($currentStep, $request->user->email)));
         } else {
             $request->update(['status' => Status::COMPLETED->value]);
