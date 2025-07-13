@@ -43,11 +43,10 @@ class WorkflowRequestController extends Controller
             return $workflowRequest->loadCount('steps');
         })->load('steps');
 
-        // $firstStep = $insertedWorkflowRequest->steps->first()->load('request.workflow', 'request.user');
         $firstStep = $insertedWorkflowRequest->currentStep();
         $approvers = (new StepApproverUserService($firstStep))->handle();
 
-        Mail::to($approvers)
+        Mail::to($approvers->pluck('email')->toArray())
             ->cc(Auth::user()->email)
             ->queue((new WorkflowRequestMail($firstStep, Auth::user()->name))->afterCommit());
 
